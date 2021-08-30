@@ -33,7 +33,11 @@ export default {
         return
       }
       if (this.form.num === 0) {
-        this.$message.error("请输入端口对数")
+        this.$message.error("请输入端口对儿数")
+        return
+      }
+      if (this.form.num > 48) {
+        this.$message.error("端口对儿数最大为48")
         return
       }
 
@@ -57,8 +61,8 @@ export default {
       return value
     },
     random() {
-      let min = 5001
-      let max = 65535
+      let min = 1
+      let max = this.form.num * 2
       return Math.floor(Math.random() * (max - min + 1) + min);
     }
   }
