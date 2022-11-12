@@ -43,9 +43,18 @@ export default {
         }, {
           value: 96,
           label: '96'
+        },{
+          value: 108,
+          label: '96M'
         }, {
           value: 144,
           label: '144'
+        }, {
+          value: 148,
+          label: '144N'
+        }, {
+          value: 334,
+          label: '288'
         }]
       },
       tempArray: []
