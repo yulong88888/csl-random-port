@@ -6,11 +6,7 @@
       </el-form-item>
       <el-form-item label="设备类型">
         <el-select style="width: 100%" v-model="form.number" placeholder="请选择">
-          <el-option
-              v-for="item in form.deviceType"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
+          <el-option v-for="item in form.deviceType" :key="item.value" :label="item.label" :value="item.value">
           </el-option>
         </el-select>
       </el-form-item>
@@ -41,20 +37,20 @@ export default {
           value: 48,
           label: '48'
         }, {
-          value: 96,
-          label: '96'
-        },{
           value: 108,
           label: '96M'
-        }, {
-          value: 144,
-          label: '144'
         }, {
           value: 148,
           label: '144N'
         }, {
+          value: 150,
+          label: '144S'
+        }, {
+          value: 194,
+          label: '192'
+        }, {
           value: 334,
-          label: '288'
+          label: '312'
         }]
       },
       tempArray: []
@@ -117,13 +113,11 @@ export default {
       return Math.floor(Math.random() * (max - min + 1) + min);
     },
     writeFile(type, result) {
-      let blob = new Blob([result], {type: "text/plain;charset=utf-8"});
+      let blob = new Blob([result], { type: "text/plain;charset=utf-8" });
       fileSaver.saveAs(blob, `${this.form.number}_${type}_${this.form.filename}.txt`)
     }
   }
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
