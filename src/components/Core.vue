@@ -113,8 +113,15 @@ export default {
       return Math.floor(Math.random() * (max - min + 1) + min);
     },
     writeFile(type, result) {
+      // 根据number查找deviceType中的label
+      let filename = ""
+      for (let i = 0; i < this.form.deviceType.length; i++) {
+        if (this.form.deviceType[i].value === this.form.number) {
+          filename = this.form.deviceType[i].label
+        }
+      }
       let blob = new Blob([result], { type: "text/plain;charset=utf-8" });
-      fileSaver.saveAs(blob, `${this.form.number}_${type}_${this.form.filename}.txt`)
+      fileSaver.saveAs(blob, `${filename}_${type}_${this.form.filename}.txt`)
     }
   }
 }
