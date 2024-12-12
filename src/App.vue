@@ -5,6 +5,7 @@
         :options="this.particlesConfig"
     />
     <el-image alt="logo" :src="require('./assets/logo.png')" style="width: 400px"></el-image>
+    <h2>专业创造价值、创新开创未来</h2>
     <Core></Core>
   </div>
 </template>

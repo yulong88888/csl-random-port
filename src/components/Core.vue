@@ -5,8 +5,8 @@
         <el-input v-model="form.filename"></el-input>
       </el-form-item>
       <el-form-item label="设备类型">
-        <el-select style="width: 100%" v-model="form.number" placeholder="请选择">
-          <el-option v-for="item in form.deviceType" :key="item.value" :label="item.label" :value="item.value">
+        <el-select style="width: 100%" v-model="form.index" placeholder="请选择">
+          <el-option v-for="(item, index) in form.items" :key="index" :label="item" :value="index">
           </el-option>
         </el-select>
       </el-form-item>
@@ -26,31 +26,48 @@ export default {
     return {
       form: {
         filename: 'default',
-        number: null,
+        index: null,
+        items: ['12','24','48','96S','144N','144S','192','312'],
         deviceType: [{
+          // 12
           value: 12,
-          label: '12'
+          OT: 13,
+          OP: 14
         }, {
+          // 24
           value: 24,
-          label: '24'
+          OT: 25,
+          OP: 26
         }, {
+          // 48
           value: 48,
-          label: '48'
+          OT: 49,
+          OP: 50
         }, {
-          value: 108,
-          label: '96M'
+          // 96S
+          value: 96,
+          OT: 107,
+          OP: 108
         }, {
-          value: 148,
-          label: '144N'
+          // 144N
+          value: 144,
+          OT: 147,
+          OP: 148
         }, {
-          value: 150,
-          label: '144S'
+          // 144S
+          value: 144,
+          OT: 149,
+          OP: 150
         }, {
-          value: 194,
-          label: '192'
+          // 192
+          value: 192,
+          OT: 193,
+          OP: 194
         }, {
-          value: 334,
-          label: '312'
+          // 312
+          value: 312,
+          OT: 333,
+          OP: 334
         }]
       },
       tempArray: []
@@ -58,68 +75,65 @@ export default {
   },
   methods: {
     clickRandom() {
-      if (this.form.number === null) {
+      if (this.form.index === null) {
         this.$message.error("请选择设备类型")
         return
       }
 
       let result = ''
       this.tempArray = []
+      let deviceTypeValue = this.form.deviceType[this.form.index].value
 
-      for (let i = 0; i < this.form.number / 2; i++) {
-        result += `${this.randomFilter()} ${this.randomFilter()}\n`
+      for (let i = 0; i < deviceTypeValue / 2; i++) {
+        result += `${this.randomFilter(deviceTypeValue)} ${this.randomFilter(deviceTypeValue)}\n`
       }
       console.log(result)
 
       this.writeFile('random', result)
     },
     clickOT() {
-      if (this.form.number === null) {
+      if (this.form.index === null) {
         this.$message.error("请选择设备类型")
         return
       }
+      let valueOT = this.form.deviceType[this.form.index].OT
       let result = ''
-      for (let i = 0; i < this.form.number; i++) {
-        result += `${i + 1} ${this.form.number + 1}\n`
-        result += `${this.form.number + 1} ${i + 1}\n`
+      for (let i = 0; i < valueOT; i++) {
+        result += `${i + 1} ${valueOT}\n`
+        result += `${valueOT} ${i + 1}\n`
       }
       console.log(result)
       this.writeFile('ot', result)
     },
     clickOP() {
-      if (this.form.number === null) {
+      if (this.form.index === null) {
         this.$message.error("请选择设备类型")
         return
       }
+      let valueOP = this.form.deviceType[this.form.index].OP
       let result = ''
-      for (let i = 0; i < this.form.number; i++) {
-        result += `${i + 1} ${this.form.number + 2}\n`
-        result += `${this.form.number + 2} ${i + 1}\n`
+      for (let i = 0; i < valueOP; i++) {
+        result += `${i + 1} ${valueOP}\n`
+        result += `${valueOP} ${i + 1}\n`
       }
       console.log(result)
       this.writeFile('op', result)
     },
-    randomFilter() {
-      let value = this.random()
+    randomFilter(max) {
+      let value = this.random(max)
       if (this.tempArray.indexOf(value) !== -1) {
-        value = this.randomFilter()
+        value = this.randomFilter(max)
       }
       this.tempArray.push(value)
       return value
     },
-    random() {
-      let min = 1
-      let max = this.form.number
-      return Math.floor(Math.random() * (max - min + 1) + min);
+    random(max) {
+      return Math.floor(Math.random() * max + 1);
     },
     writeFile(type, result) {
       // 根据number查找deviceType中的label
       let filename = ""
-      for (let i = 0; i < this.form.deviceType.length; i++) {
-        if (this.form.deviceType[i].value === this.form.number) {
-          filename = this.form.deviceType[i].label
-        }
-      }
+      filename = this.form.items[this.form.index]
       let blob = new Blob([result], { type: "text/plain;charset=utf-8" });
       fileSaver.saveAs(blob, `${filename}_${type}_${this.form.filename}.txt`)
     }
